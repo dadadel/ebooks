@@ -8,7 +8,15 @@ The application is contained in a single python file. It is not really pythonist
 But my objective was to have a dirty basic program quickly working. And it does what it is supposed to.
 I would like to enhance it when I will have time.
 
+
+Before starting:
+---------------
+
+You must set your ebooks directory to the variable books_path in the ebook.py code.
+Then you need a python WSGI server to run the application.
 I'm serving the application using gunicorn via nginx. You can easily use any other alternative (e.g.: apache2 + mod_python).
+
+
 
 To run it with Nginx and gunicorn:
 ---------------------------------
