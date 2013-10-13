@@ -7,7 +7,7 @@ __version__ = "0.0.1"
 __maintainer__ = "A. Daouzli"
 
 # The application() function is the function that responses to the HTTP request.
-# It is that function that you should link to your server.
+# It is this function that you should link to your server.
 
 
 import os
@@ -21,14 +21,14 @@ formats = ['epub','pdf']
 ignored_chars = ['(', '[']
 lang = 'en'
 if lang == 'fr':
-    ignored_words = ['le ', 'la ', 'les ', 'l\'']
+    ignored_words = ['le ', 'la ', 'les ', 'l\''] # must be lower case
 
     str_html_head_title = "Mes livres"
     str_html_body_title = "Voici la liste de bouquins"
     str_html_full_list = "Liste complète"
     str_html_no_letter = "Liste des bouquins ne commançant pas par une lettre"
-    str_html_with_letter = "Liste des bouquin contenant" 
-    str_html_containing = "Liste des bouquin commançant par la lettre"
+    str_html_with_letter = "Liste des bouquins commançant par la lettre"
+    str_html_containing = "Liste des bouquins contenant"
     str_html_select_page = "Sélectionner la page"
     str_html_author = "Auteur"
     str_html_summary = "Résumé"
@@ -38,14 +38,14 @@ if lang == 'fr':
     str_html_bad_page = "Page incorrecte"
     str_html_home = "Accueil"
 else:
-    ignored_words = ['the ', 'a ']
+    ignored_words = ['the ', 'a '] # must be lower case
 
     str_html_head_title = "My books"
     str_html_body_title = "Here is the books list"
     str_html_full_list = "Full list"
     str_html_no_letter = "List of books not starting with a letter"
     str_html_with_letter = "List of books starting with the letter" 
-    str_html_containing = "List of books starting with the letter"
+    str_html_containing = "List of books containing"
     str_html_select_page = "Select a page"
     str_html_author = "Author"
     str_html_summary = "Summary"
