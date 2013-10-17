@@ -27,29 +27,29 @@ To run it with Nginx and gunicorn:
 
 - First you should install Nginx and gunicorn
 
-$ sudo apt-get install nginx gunicorn
+    $ sudo apt-get install nginx gunicorn
 
 - Then configure Nginx to enable a socket connection to gunicorn:
 open file /etc/nginx/sites-enabled/default and add:
 
-  server {
-  ...
+    server {
+    ...
   
         location /ebooks/ {
                 proxy_pass http://unix:/tmp/gunicorn.sock;
         }
         
-  ...
-  }
+    ...
+    }
 
 - Go to the path containing your script ebooks.py and run gunicorn:
 
-$ gunicorn -b unix:/tmp/gunicorn.sock --workers=2 ebooks:application
+    $ gunicorn -b unix:/tmp/gunicorn.sock --workers=2 ebooks:application
 
 - Browse your ebooks collection with a web browser:
 
-e.g.:
+    e.g.:
 
-$ links2 http://127.0.0.1/ebooks
+    $ links2 http://127.0.0.1/ebooks
 
 (of course you can use Epiphany, Firefox, Chromium or any other browser of your choice.)
