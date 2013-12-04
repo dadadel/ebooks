@@ -14,7 +14,7 @@ Before starting:
 ---------------
 
 The python epub module is used so you must install it first.
-$ sudo pip install epub
+    $ sudo pip install epub
 
 You must set your ebooks directory to the variable books_path in the ebook.py code.
 Then you need a python WSGI server to run the application.
@@ -34,11 +34,11 @@ open file /etc/nginx/sites-enabled/default and add:
 
     server {
     ...
-  
+    
         location /ebooks/ {
                 proxy_pass http://unix:/tmp/gunicorn.sock;
         }
-        
+    
     ...
     }
 
