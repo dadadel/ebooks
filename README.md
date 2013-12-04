@@ -13,9 +13,9 @@ I would like to enhance it when I will have time.
 Before starting:
 ---------------
 
-The python epub module is used so you must install it first.
+The python epub module is used so you must install it first:
 
-    $ sudo pip install epub
+    sudo pip install epub
 
 You must set your ebooks directory to the variable books_path in the ebook.py code.
 Then you need a python WSGI server to run the application.
@@ -33,17 +33,17 @@ To run it with Nginx and gunicorn:
 - Then configure Nginx to enable a socket connection to gunicorn:
 open file /etc/nginx/sites-enabled/default and add:
 
+
     server {
     ...
-    
         location /ebooks/ {
                 proxy_pass http://unix:/tmp/gunicorn.sock;
         }
-    
     ...
     }
 
 - Go to the path containing your script ebooks.py and run gunicorn:
+
 
     $ gunicorn -b unix:/tmp/gunicorn.sock --workers=2 ebooks:application
 
