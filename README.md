@@ -26,9 +26,10 @@ I'm serving the application using gunicorn via nginx. You can easily use any oth
 To run it with Nginx and gunicorn:
 ---------------------------------
 
-- First you should install Nginx and gunicorn
+- First you should install Nginx and gunicorn:
 
-    $ sudo apt-get install nginx gunicorn
+
+    sudo apt-get install nginx gunicorn
 
 - Then configure Nginx to enable a socket connection to gunicorn:
 open file /etc/nginx/sites-enabled/default and add:
