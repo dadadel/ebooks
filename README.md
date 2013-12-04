@@ -36,11 +36,14 @@ open file /etc/nginx/sites-enabled/default and add:
 
     server {
     ...
+    
         location /ebooks/ {
                 proxy_pass http://unix:/tmp/gunicorn.sock;
         }
+        
     ...
     }
+
 
 - Go to the path containing your script ebooks.py and run gunicorn:
 
