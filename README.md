@@ -30,9 +30,8 @@ First you should install Nginx and gunicorn:
 
     sudo apt-get install nginx gunicorn
 
-- Then configure Nginx to enable a socket connection to gunicorn:
+Then configure Nginx to enable a socket connection to gunicorn:
 open file /etc/nginx/sites-enabled/default and add:
-
 
     server {
     ...
