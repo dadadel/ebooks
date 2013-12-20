@@ -37,6 +37,7 @@ if lang == 'fr':
     str_html_404 = '404 NOT FOUND'
     str_html_bad_page = "Page incorrecte"
     str_html_home = "Accueil"
+    str_html_search = "Rechercher"
 else:
     ignored_words = ['the ', 'a '] # must be lower case
 
@@ -44,7 +45,7 @@ else:
     str_html_body_title = "Here is the books list"
     str_html_full_list = "Full list"
     str_html_no_letter = "List of books not starting with a letter"
-    str_html_with_letter = "List of books starting with the letter" 
+    str_html_with_letter = "List of books starting with the letter"
     str_html_containing = "List of books containing"
     str_html_select_page = "Select a page"
     str_html_author = "Author"
@@ -54,7 +55,7 @@ else:
     str_html_404 = '404 NOT FOUND'
     str_html_bad_page = "Bad page"
     str_html_home = "Home"
-
+    str_html_search = "Search"
 ############ end of custom data
 
 
@@ -121,7 +122,7 @@ def get_file_list(path):
 
     @param path: string containing the path where to search files.
     @return: a list of found ebooks. Each element of the list contains
-    the path, the file name, the name (without the file extension), the 
+    the path, the file name, the name (without the file extension), the
     first significant letter and an id.
     @rtype: list of dictionaries
 
@@ -151,14 +152,14 @@ def gen_page_list(book_list, letter="*"):
     @param book_list: the initial list of books
     @type: list of dictionaries
     @param letter: the filter:
-    - If it is an alphabetical letter then the returned list will contain 
+    - If it is an alphabetical letter then the returned list will contain
     all books starting with that letter.
-            - If it is '*' no filter is done, thus all books are kept.
+    - If it is '*' no filter is done, thus all books are kept.
     - If it is an empty string '', then all books not starting with a letter
     will be kept (e.g.: starting with a number)
     @return: the list of books filtered
     @rtype: list of dictionaries
-    
+
     '''
     letters = all_letters()
     page_list = []
@@ -219,7 +220,7 @@ def get_html_page(books, letter, selected_book=None):
     for l in all_letters():
         content += '<a href="/ebooks/' + l + '"> -' + l.upper() + '- </a> '
     content += '<a href="/ebooks/*"> -all- </a>'
-    content += '\n<br/>Rechercher:<br/>\n'
+    content += '\n<br/>' + str_html_search + '<br/>\n'
     content += '<form method="post" action="/ebooks/search">\n'
     content += '  <input type="search" name="search" /><br/>\n'
     content += '</form>'
@@ -233,7 +234,6 @@ def get_html_page(books, letter, selected_book=None):
             content += '<a href="/ebooks/books/' + book['file'] + '">' + str_html_go_top + '</a><br/><br/>\n'
     content += '</ul>\n'
     foot = '''
-    
         </body>
     </html>
     '''
