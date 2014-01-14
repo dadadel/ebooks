@@ -228,8 +228,9 @@ def get_html_page(books, letter, selected_book=None):
     for book in books:
         content += '<li id="idx_' + str(book['id']) + '"> <a href="/ebooks/books/' + book['file'] + '#idx_' + str(book['id']) + '">' + book['file'] + '</a> </li>\n'
         if selected_book and book['file'] == selected_book['file']:
-            content += '<b>' + str_html_author + '</b>: ' + get_epub_author(selected_book) + '<br/>\n'
-            content += '<b>' + str_html_summary + '</b>: ' + get_epub_description(selected_book) + '<br/>\n'
+            if selected_book['file'].endswith('.epub'):
+                content += '<b>' + str_html_author + '</b>: ' + get_epub_author(selected_book) + '<br/>\n'
+                content += '<b>' + str_html_summary + '</b>: ' + get_epub_description(selected_book) + '<br/>\n'
             content += '<a href="/ebooks/dl/' + book['file'] + '">' + str_html_download + '</a><br/><br/>\n'
             content += '<a href="/ebooks/books/' + book['file'] + '">' + str_html_go_top + '</a><br/><br/>\n'
     content += '</ul>\n'
