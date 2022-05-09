@@ -1,7 +1,7 @@
 ebooks
 ======
 
-This is a very basic python WSGI web application to browse an ebook collection. 
+This is a very basic python3 ~~WSGI~~ ASGI web application to browse an ebook collection. 
 Accepted formats are PDF and EPUB but you can easily add others.
 
 It allows searching, filtering by letter, getting book's informations (author, description), and downloading.
@@ -22,6 +22,25 @@ Then you need a python WSGI server to run the application.
 I'm serving the application using gunicorn via nginx. You can easily use any other alternative (e.g.: apache2 + mod_python).
 
 
+# Runnig using uvicorn
+
+First install uvicorn:
+
+```
+pip install uvicorn[standard]
+```
+
+Then run the server:
+
+```
+uvicorn ebooks:application --reload --host 0.0.0.0 --port 8080
+```
+
+Now open your browser and visit <http://localhost:8080/ebooks>
+
+
+
+# DEPRECATED (WSGI)
 
 To run it with Nginx and gunicorn:
 ---------------------------------
@@ -46,6 +65,8 @@ open file /etc/nginx/sites-enabled/default and add:
 
 
 Go to the path containing your script ebooks.py and run gunicorn:
+
+uvicorn ebooks:application --reload --host localhost --port 33003
 
     gunicorn -b unix:/tmp/gunicorn.sock --workers=2 ebooks:application
 

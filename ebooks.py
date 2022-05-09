@@ -1,9 +1,9 @@
 # -*- coding: utf8 -*- 
 
 __author__ = "A. Daouzli"
-__copyright__ = "Copyright 2013, A. Daouzli"
+__copyright__ = "Copyright 2013-2022, A. Daouzli"
 __licence__ = "GPL3"
-__version__ = "0.0.1"
+__version__ = "0.1.0"
 __maintainer__ = "A. Daouzli"
 
 # The application() function is the function that responses to the HTTP request.
@@ -143,7 +143,7 @@ def get_file_list(path):
 def all_letters():
     '''Get the list of all alphabetical letters.
     '''
-    l = [chr(i) for i in xrange(ord('a'), ord('z')+1)]
+    l = [chr(i) for i in range(ord('a'), ord('z')+1)]
     return l
 
 def gen_page_list(book_list, letter="*"):
@@ -229,8 +229,8 @@ def get_html_page(books, letter, selected_book=None):
         content += '<li id="idx_' + str(book['id']) + '"> <a href="/ebooks/books/' + book['file'] + '#idx_' + str(book['id']) + '">' + book['file'] + '</a> </li>\n'
         if selected_book and book['file'] == selected_book['file']:
             if selected_book['file'].endswith('.epub'):
-                content += '<b>' + str_html_author + '</b>: ' + get_epub_author(selected_book) + '<br/>\n'
-                content += '<b>' + str_html_summary + '</b>: ' + get_epub_description(selected_book) + '<br/>\n'
+                content += '<b>' + str_html_author + '</b>: ' + get_epub_author(selected_book).decode('utf8') + '<br/>\n'
+                content += '<b>' + str_html_summary + '</b>: ' + get_epub_description(selected_book).decode('utf8') + '<br/>\n'
             content += '<a href="/ebooks/dl/' + book['file'] + '">' + str_html_download + '</a><br/><br/>\n'
             content += '<a href="/ebooks/books/' + book['file'] + '">' + str_html_go_top + '</a><br/><br/>\n'
     content += '</ul>\n'
@@ -255,7 +255,7 @@ def has_valid_extension(path):
             break
     return result
 
-def application(environ, start_response):
+async def application(scope, receive, send):  # environ, start_response):
     '''Serve the client HTTP request.
 
     @param environ: the request informations.
@@ -265,8 +265,10 @@ def application(environ, start_response):
     (web page or book data)
 
     '''
+    recv = await receive()
     status = '200 OK'
-    path = environ['PATH_INFO']
+    status_code = 200
+    path = scope["path"]
     content_type = 'text/html'
     path = path.replace('/ebooks','')
     file_name = books_path + path.replace('/books','').replace('/dl','')
@@ -274,11 +276,12 @@ def application(environ, start_response):
     # The request is not valid
     if len(path) > 2 and not path.endswith('.epub') and path != '/search':
         status = str_html_404 
+        status_code = 404
         output = '<html>' + str_html_bad_page + '.'+str(path)+' <a href="/ebooks/*">' + str_html_home + '</a></html>'
 
     # A download was requested
     elif '/dl/' in path and has_valid_extension(path) and os.path.exists(file_name):
-        output = open(file_name).read()
+        output = open(file_name, "rb").read()
         content_type = 'application/octet-stream'
 
     # A book was selected
@@ -301,10 +304,10 @@ def application(environ, start_response):
         if len(path) > 0:
             letter = path[0]
         full_book_list = get_file_list(books_path)
-        if environ['REQUEST_METHOD'].upper() == 'POST':
-            input = environ['wsgi.input'].read().split('=')
-            search = input[1]
-            if input[0].strip() == 'search':
+        if scope['method'].upper() == 'POST':
+            _input = recv['body'].decode('utf8').split('=')
+            search = _input[1]
+            if _input[0].strip() == 'search':
                 letter = search 
                 book_list = gen_page_list_search(full_book_list, search)
             else:
@@ -314,8 +317,17 @@ def application(environ, start_response):
             book_list = gen_page_list(full_book_list, letter)
         output = get_html_page(book_list, letter)
 
-    response_headers = [('Content-type', content_type), ('charset', 'utf-8'),
-                        ('Content-Length', str(len(output)))]
-    start_response(status, response_headers)
+    response_headers = [(b'Content-type', content_type.encode('utf8')), (b'charset', b'utf-8'),]
 
-    return [output]
+    await send({
+        "type": "http.response.start",
+        "status": status_code,
+        "headers": response_headers,
+    })
+
+    await send({
+        "type": "http.response.body",
+        "status": status_code,
+        "body": output.encode('utf8') if type(output) is str else output,
+    })
+
